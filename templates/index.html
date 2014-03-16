@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="devicesApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <title>Lampor</title>
+</head>
+<style>
+    body {
+       padding: 5px;
+    }
+</style>
+<body>
+{% raw %}
+
+<form class="form-horizontal" role="form" ng-controller="DevicesController">
+    <div class="form-group container-fluid row" ng-repeat="device in devices">
+    <label class="col-xs-7 control-label">{{ device.name }}</label>
+        <div class="col-xs-2">
+            <button type="button" class="btn btn-{{ device.status }}" ng-click="toggle(device)">{{ device.label }}</button>
+        </div>
+    </div>
+</form>
+{% endraw %}
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='bower_components/angular/angular.min.js') }}"></script>
+
+    <script>
+        var app = angular.module('devicesApp', []);
+
+        app.controller('DevicesController', function($scope, $http, deviceFactory) {
+            function init() {
+                deviceFactory.getDevices().success(function(data) {
+                    $scope.devices = data;
+                });
+            }
+            init();
+            $scope.toggle = function(device) {
+                $http.get('/devices/toggle/' + device.id).success(function(data) {
+                    device.status = data.status;
+                    device.label = data.label;
+
+                    console.log("Hepp " + device.name);
+                });
+            }
+        });
+
+        app.factory('deviceFactory', function($http){
+            var factory = {};
+            factory.getDevices = function() {
+                return $http.get('/devices')
+            };
+            return factory;
+        })
+    </script>
+</body>
+</html>

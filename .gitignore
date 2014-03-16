@@ -1,0 +1,22 @@
+# Extracted from https://github.com/ulrich/macaron-factory/blob/master/.gitignore
+# Ignore all dotfiles...
+.*
+# except for .gitignore
+!.gitignore
+!.bowerrc
+
+*~
+#*
+*#
+*.iws
+*.iml
+*.ipr
+eclipse
+*.backup
+*.orig
+
+build
+target
+slask
+static/bower_components
+tellcore_examples
