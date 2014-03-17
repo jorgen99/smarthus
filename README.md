@@ -12,7 +12,7 @@ web framework that could talk to the Tellstick Duo. After a bit of
 Googeling I found my way to [Flask] (http://flask.pocoo.org/docs/).
 
 __Disclamer:__
-This project was slapped together in an afternoon. Seasoned Pyton,
+This project was slapped together in an afternoon. Seasoned Python,
 Angular and Bootstrap developers may hurt their eyes looking at
 this code. Hopefully the code will improve over time. Yes, I know
 you should not have all the code in one html-file... :)
