@@ -27,7 +27,10 @@ def toggle(device_id):
     if command(device) == "success":
         device.turn_off()
     else:
-        device.turn_on()
+        if device.id == 2:
+            device.dim(80)
+        else:
+            device.turn_on()
     return json.dumps(device_tupl(device))
 
 
@@ -66,7 +69,8 @@ def command(device):
     elif cmd == const.TELLSTICK_TURNOFF:
         cmd_str = "danger"
     elif cmd == const.TELLSTICK_DIM:
-        cmd_str = "DIMMED:{}".format(device.last_sent_value())
+        #cmd_str = "DIMMED:{}".format(device.last_sent_value())
+        cmd_str = "success"
     else:
         cmd_str = "UNKNOWN:{}".format(cmd)
     return cmd_str
