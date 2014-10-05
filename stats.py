@@ -2,22 +2,15 @@
 
 import tellcore.telldus as td
 import tellcore.constants as const
+from daemon.device_locator import DeviceLocator
 
-
-def find_device(device, devices):
-    for d in devices:
-        if str(d.id) == device or d.name == device:
-            return d
-    print("Device '{}' not found".format(device))
-    return None
 
 core = td.TelldusCore()
 
-device = find_device("1", core.devices())
-print(device.name)
-print(device.last_sent_command(4095))
+if __name__ == '__main__':
+    device_locator = DeviceLocator(core)
+    device_ids = [1, 2, 3, 4, 5, 6, 7]
+    for id in device_ids:
+        device = device_locator.find_device(id)
 
-print
-for d in core.devices():
-    dimable = d.methods(255) & const.TELLSTICK_DIM == const.TELLSTICK_DIM
-    print(u"{} {} {}".format(d.id, d.name, dimable))
+
