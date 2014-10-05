@@ -21,7 +21,13 @@ def devices_json():
     return device_info()
 
 
-@app.route('/devices/toggle/<int:device_id>')
+@app.route('/devices/turnOffAll', methods = ['POST'])
+def turnOffAll():
+    for device in core.devices():
+        device.turn_off()
+    return device_info()
+
+@app.route('/devices/toggle/<int:device_id>', methods = ['POST'])
 def toggle(device_id):
     device = find_device(device_id)
     if command(device) == "success":

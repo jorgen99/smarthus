@@ -14,8 +14,8 @@ from events.sensor import Sensor
 #  5 Gästrummet                  11990530    4
 #  6 Alvas fönster               11990530    5
 #  7 Sovrummet                   11990530    6
-#  8 Källarelement               22222001    2
-#  9 Tryckstegringspumpen        22222001    3
+#  8 Kaninlampan                 22222001    2
+#  9 Gristavlan                  22222001    3
 # 10 Ledig                       22222001    4
 # 11 Växthuset                   22222001    5
 
@@ -39,7 +39,7 @@ class Constants:
     LIGHT_RELAY = Sensor("12930598", "10")
     MOVEMENT_SENSOR = Sensor("12066258", "10")
     VALID_PROTOCOLS = ["mandolyn", "arctech"]
-    MOOD_LIGHTS = [1, 2, 4, 5, 7]
+    MOOD_LIGHTS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     MOTION_CONTROLLED_LGHTS = [4]
     DIM_LEVEL = 140
     ON = "turnon"
