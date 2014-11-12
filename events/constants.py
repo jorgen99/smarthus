@@ -3,7 +3,7 @@ from events.sensor import Sensor
 
 
 # id Namn                        House      Unit     Group
-#--------------------------------------------------------------
+# --------------------------------------------------------------
 #    Ljussensor                  12930598   10       0
 #    Rörelse                     12066258   10       0
 #
@@ -40,6 +40,7 @@ class Constants:
     MOVEMENT_SENSOR = Sensor("12066258", "10")
     VALID_PROTOCOLS = ["mandolyn", "arctech"]
     MOOD_LIGHTS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    MORNING_LIGHTS = [2, 4, 9]
     MOTION_CONTROLLED_LGHTS = [4]
     DIM_LEVEL = 140
     ON = "turnon"

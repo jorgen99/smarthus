@@ -7,6 +7,8 @@ import tellcore.constants as const
 
 import json
 
+from events.constants import Constants
+
 app = Flask(__name__)
 core = td.TelldusCore()
 
@@ -21,13 +23,23 @@ def devices_json():
     return device_info()
 
 
-@app.route('/devices/turnOffAll', methods = ['POST'])
-def turnOffAll():
+@app.route('/devices/turnOffAll', methods=['POST'])
+def turn_off_all():
     for device in core.devices():
         device.turn_off()
     return device_info()
 
-@app.route('/devices/toggle/<int:device_id>', methods = ['POST'])
+
+@app.route('/devices/turnOnSome', methods=['POST'])
+def turn_on_some():
+    for device_id in Constants.MORNING_LIGHTS:
+        device = find_device(device_id)
+        if device is not None:
+            device.turn_on()
+    return device_info()
+
+
+@app.route('/devices/toggle/<int:device_id>', methods=['POST'])
 def toggle(device_id):
     device = find_device(device_id)
     if command(device) == "success":

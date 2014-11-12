@@ -4,6 +4,7 @@ import time
 from events.constants import Constants
 import datetime
 
+
 class EventHandler:
     def __init__(self, device_locator, event):
         self.device_locator = device_locator
@@ -51,13 +52,15 @@ class EventHandler:
         self.__last_command(device)
         time.sleep(0.5)
 
-    def __last_command(self, device):
+    @staticmethod
+    def __last_command(device):
         return device.last_sent_command(
             const.TELLSTICK_TURNON
             | const.TELLSTICK_TURNOFF
             | const.TELLSTICK_DIM)
 
-    def __encode(self, x):
+    @staticmethod
+    def __encode(x):
         """ Do not die on bad input when doing debug prints """
         if type(x) == str:
             return x

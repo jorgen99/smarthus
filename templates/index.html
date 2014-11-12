@@ -14,7 +14,7 @@
         margin-bottom: 5px;
     }
     .good-night {
-        margin: 10px 0 14px 0;
+        margin: 10px 15px 15px -15px;
     }
 </style>
 <body>
@@ -23,9 +23,12 @@
 <div class="container-fluid" ng-controller="DevicesController">
 
   <div class="row good-night">
-    <div class="col-xs-4 col-xs-offset-4">
-      <button ng-click="turnOffAll()" type="button" class="btn btn-danger btn-lg">God natt</button>
+    <div class="col-xs-6">
+        <button ng-click="turnOffAll()" type="button" class="btn btn-danger btn-lg">God natt</button>
     </div>
+      <div class="col-xs-6">
+          <button ng-click="turnOnSome()" type="button" class="btn btn-success btn-lg">God morgon</button>
+      </div>
   </div>
 
     <div class="row button-row" ng-repeat="device in devices">
@@ -62,6 +65,11 @@
             };
             $scope.turnOffAll = function() {
                 $http.post('devices/turnOffAll').success(function(data) {
+                    $scope.devices = data;
+                });
+            };
+            $scope.turnOnSome = function() {
+                $http.post('devices/turnOnSome').success(function(data) {
                     $scope.devices = data;
                 });
             };
