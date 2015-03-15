@@ -42,6 +42,6 @@ class Constants:
     MOOD_LIGHTS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     MORNING_LIGHTS = [2, 4, 9]
     MOTION_CONTROLLED_LGHTS = [4]
-    DIM_LEVEL = 140
+    DIM_LEVEL = 80
     ON = "turnon"
     OFF = "turnoff"

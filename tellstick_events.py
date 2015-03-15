@@ -17,11 +17,11 @@ try:
 
     loop = asyncio.get_event_loop()
     dispatcher = td.AsyncioCallbackDispatcher(loop)
-    core = td.TelldusCore(callback_dispatcher=dispatcher)
 except ImportError:
     loop = None
-    core = td.TelldusCore()
+    dispatcher = td.QueuedCallbackDispatcher()
 
+core = td.TelldusCore(callback_dispatcher=dispatcher)
 device_locator = DeviceLocator(core)
 core.register_raw_device_event(raw_event)
 

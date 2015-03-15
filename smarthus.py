@@ -35,7 +35,10 @@ def turn_on_some():
     for device_id in Constants.MORNING_LIGHTS:
         device = find_device(device_id)
         if device is not None:
-            device.turn_on()
+            if device.id == 2:
+                device.dim(80)
+            else:
+                device.turn_on()
     return device_info()
 
 
