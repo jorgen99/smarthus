@@ -2,6 +2,7 @@
 class DeviceLocator:
 
     def __init__(self, core):
+        print('skapar device_locator')
         self.core = core
         self.device_cache = {}
 
@@ -12,6 +13,9 @@ class DeviceLocator:
             self.device_cache[device_id] = device
 
         return device
+
+    def all(self):
+        return self.core.devices()
 
     def __find(self, device_id):
         for device in self.core.devices():

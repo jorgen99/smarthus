@@ -1,5 +1,5 @@
 from events.constants import Constants
-
+from datetime import datetime
 
 class Event:
     def __init__(self, data):

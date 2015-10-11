@@ -2,23 +2,43 @@
 from tellcore import constants as const
 import time
 from events.constants import Constants
-import datetime
+from events.status import Status
+from datetime import datetime
 
 
 class EventHandler:
-    def __init__(self, device_locator, event):
+    def __init__(self, device_locator, status):
+        print('skapar event handler')
         self.device_locator = device_locator
-        self.event = event
+        self.status = status
+        
 
-    def handle_event(self):
-        if self.event.it_became_dark():
+    def handle(self, event):
+        if event.it_became_dark():
+            self.status.turn_on()
             self.__control_lights(Constants.MOOD_LIGHTS, Constants.ON)
-        elif self.event.it_became_light():
+        elif event.it_became_light():
+            self.status.turn_off()
             self.__control_lights(Constants.MOOD_LIGHTS, Constants.OFF)
-        elif self.event.motion_activated():
+        elif self.time_to_turn_out_lights():
+            print('slacker allt')
+            self.status.turn_off()
+            for device in self.device_locator.all():
+                self.__send_command_to_device(Constants.OFF, device)
+        elif event.motion_activated():
             self.__control_lights(Constants.MOTION_CONTROLLED_LGHTS, Constants.ON)
-        elif self.event.no_motion_for_a_while():
+        elif event.no_motion_for_a_while():
             self.__control_lights(Constants.MOTION_CONTROLLED_LGHTS, Constants.OFF)
+
+    def time_to_turn_out_lights(self):
+        d = datetime.now()
+        print("{0}:{1} - {2}".format(d.hour, d.minute, self.status.is_turned_on()))
+        if (d.hour == 23 and d.minute < 3) and self.status.is_turned_on():
+            print('japp, ska slacka')
+            return True
+        else:
+            print('nae, ska inte slacka')
+            return False
 
     def __control_lights(self, light_ids, light_command):
         for device_id in light_ids:
@@ -29,7 +49,7 @@ class EventHandler:
     def __send_command_to_device(self, command, device):
         cmd = self.__last_command(device)
 
-        timestamp = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+        timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
         if (command == Constants.OFF and
                 (cmd == const.TELLSTICK_TURNON or cmd == const.TELLSTICK_DIM)):
             encoded_name = self.__encode(device.name)
