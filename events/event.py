@@ -53,3 +53,9 @@ class Event:
 
     def no_motion_for_a_while(self):
         return self.is_motion_event() and self.is_turn_off()
+
+    def morning_on(self):
+        return Constants.LIGHT_SWITCH_MORNING.event_is_from_me(self) and self.is_turn_on()
+
+    def morning_off(self):
+        return Constants.LIGHT_SWITCH_MORNING.event_is_from_me(self) and self.is_turn_off()

@@ -8,65 +8,97 @@ from datetime import datetime
 
 class EventHandler:
     def __init__(self, device_locator, status):
-        print('skapar event handler')
         self.device_locator = device_locator
         self.status = status
         
 
     def handle(self, event):
         if event.it_became_dark():
+            self.debug_print("Det blev morkt")
             self.status.turn_on()
             self.__control_lights(Constants.MOOD_LIGHTS, Constants.ON)
         elif event.it_became_light():
+            self.debug_print("Det blev ljust")
             self.status.turn_off()
             self.__control_lights(Constants.MOOD_LIGHTS, Constants.OFF)
+
         elif self.time_to_turn_out_lights():
-            print('slacker allt')
-            self.status.turn_off()
-            for device in self.device_locator.all():
-                self.__send_command_to_device(Constants.OFF, device)
+            self.debug_print("Dags att slacka for natten")
+            self.__turn_off_all_but_night_lights()
+
         elif event.motion_activated():
+            self.debug_print("Rorelsedackare aktiverad")
             self.__control_lights(Constants.MOTION_CONTROLLED_LGHTS, Constants.ON)
         elif event.no_motion_for_a_while():
+            self.debug_print("Ingen rorelse på ett tag")
             self.__control_lights(Constants.MOTION_CONTROLLED_LGHTS, Constants.OFF)
+
+        elif event.morning_on():
+            self.debug_print("Någon tryckte PÅ lampknappen")
+            self.__control_lights(Constants.MORNING_LIGHTS, Constants.ON)
+        elif event.morning_off():
+            self.debug_print("Någon tryckte AV lampknappen")
+            self.__turn_off_all_but_night_lights()
+            
+
+    def debug_print(self, msg):
+        now = datetime.now()
+        print("{0}:{1}:{2} - {3}".format(now.hour, now.minute, now.second, msg))
 
     def time_to_turn_out_lights(self):
         d = datetime.now()
-        print("{0}:{1} - {2}".format(d.hour, d.minute, self.status.is_turned_on()))
         if (d.hour == 23 and d.minute < 3) and self.status.is_turned_on():
             print('japp, ska slacka')
             return True
         else:
-            print('nae, ska inte slacka')
             return False
+
+    def __turn_off_all_but_night_lights(self):
+        print('slacker allt utom natt lampor')
+        self.status.turn_off()
+        for device in self.device_locator.all():
+            encoded_name = self.__encode(device.name)
+            self.debug_print("Kanske släcka: {0}".format(encoded_name))
+            if device.id in Constants.NIGHT_LIGHTS:
+                self.debug_print("Slacker inte nattljus: {0}".format(encoded_name))
+                continue
+            else:
+                self.debug_print("Ja släcker {0}".format(encoded_name))
+                self.__send_command_to_device(Constants.OFF, device)
+                
 
     def __control_lights(self, light_ids, light_command):
         for device_id in light_ids:
             device = self.device_locator.find_device(device_id)
             if device is not None:
                 self.__send_command_to_device(light_command, device)
+            else:
+                print("Light with id {0} was None!".format(device_id))
 
     def __send_command_to_device(self, command, device):
         cmd = self.__last_command(device)
-
         timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+        encoded_name = self.__encode(device.name)
+        print("Sending command {0} to device {1}".format(command, encoded_name))
+
         if (command == Constants.OFF and
                 (cmd == const.TELLSTICK_TURNON or cmd == const.TELLSTICK_DIM)):
             encoded_name = self.__encode(device.name)
-            print("{} : Av - {}".format(timestamp, encoded_name))
+            print("   {} : Av - {}".format(timestamp, encoded_name))
             for _ in [1, 2, 3]:
                 device.turn_off()
                 self.__status_and_sleep(device)
         elif command == Constants.ON and cmd == const.TELLSTICK_TURNOFF:
-            encoded_name = self.__encode(device.name)
             on = self.__encode("På")
-            print("{} : {} - {}".format(timestamp, on, encoded_name))
+            print("   {} : {} - {}".format(timestamp, on, encoded_name))
             for _ in [1, 2, 3]:
                 if device.id == 2:
                     device.dim(Constants.DIM_LEVEL)
                 else:
                     device.turn_on()
                 self.__status_and_sleep(device)
+        else:
+            print("   Inte av och inte på...")
 
     def __status_and_sleep(self, device):
         self.__last_command(device)
