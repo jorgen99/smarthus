@@ -1,10 +1,10 @@
 # coding=utf-8
+
 from tellcore import constants as const
 import time
 from events.constants import Constants
 from events.status import Status
 from datetime import datetime
-
 
 class EventHandler:
     def __init__(self, device_locator, status):
@@ -39,11 +39,19 @@ class EventHandler:
         elif event.morning_off():
             self.debug_print("Någon tryckte AV lampknappen")
             self.__turn_off_all_but_night_lights()
-            
+
+        elif event.is_temperature_humidity_event():
+            msg = "Temp; {0};Fukt; {1}".format(event.temp, event.humidity)
+            self.debug_print(msg)
+            self.debug_print(event.to_string())
+            now = datetime.now()
+            file_msg = "{0} - {1}".format(now.isoformat(), msg)
+            with open('/var/log/smarthus.log', 'a') as the_file:
+                the_file.write(file_msg + "\n")
 
     def debug_print(self, msg):
         now = datetime.now()
-        print("{0}:{1}:{2} - {3}".format(now.hour, now.minute, now.second, msg))
+        print("{0} - {1}".format(now.isoformat(), msg))
 
     def time_to_turn_out_lights(self):
         d = datetime.now()
@@ -76,19 +84,19 @@ class EventHandler:
                 print("Light with id {0} was None!".format(device_id))
 
     def __send_command_to_device(self, command, device):
-        cmd = self.__last_command(device)
+        last_command = self.__last_command(device)
         timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
         encoded_name = self.__encode(device.name)
         print("Sending command {0} to device {1}".format(command, encoded_name))
 
         if (command == Constants.OFF and
-                (cmd == const.TELLSTICK_TURNON or cmd == const.TELLSTICK_DIM)):
+                (last_command == const.TELLSTICK_TURNON or last_command == const.TELLSTICK_DIM)):
             encoded_name = self.__encode(device.name)
             print("   {} : Av - {}".format(timestamp, encoded_name))
             for _ in [1, 2, 3]:
                 device.turn_off()
                 self.__status_and_sleep(device)
-        elif command == Constants.ON and cmd == const.TELLSTICK_TURNOFF:
+        elif command == Constants.ON and last_command == const.TELLSTICK_TURNOFF:
             on = self.__encode("På")
             print("   {} : {} - {}".format(timestamp, on, encoded_name))
             for _ in [1, 2, 3]:
@@ -98,7 +106,7 @@ class EventHandler:
                     device.turn_on()
                 self.__status_and_sleep(device)
         else:
-            print("   Inte av och inte på...")
+            print("   Inte av och inte på... command: {}, last_command: {}".format(command, last_command))
 
     def __status_and_sleep(self, device):
         self.__last_command(device)

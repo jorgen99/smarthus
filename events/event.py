@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from events.constants import Constants
 from datetime import datetime
 
@@ -13,6 +15,8 @@ class Event:
         self.model = data_dict.get("model", None)
         self.clazz = data_dict.get("class", None)
         self.temp = data_dict.get("temp", None)
+        self.humidity = data_dict.get("humidity", None)
+
 
     @staticmethod
     def __create_data_dict(data):
@@ -22,7 +26,10 @@ class Event:
         return data_dict
 
     def is_temperature_event(self):
-        return self.temp is not None
+        return self.model == "temperature" and self.temp is not None
+
+    def is_temperature_humidity_event(self):
+        return self.model == "temperaturehumidity" and self.temp is not None and self.humidity is not None
 
     def is_light_event(self):
         return Constants.LIGHT_RELAY.event_is_from_me(self)
@@ -59,3 +66,6 @@ class Event:
 
     def morning_off(self):
         return Constants.LIGHT_SWITCH_MORNING.event_is_from_me(self) and self.is_turn_off()
+
+    def to_string(self):
+        return "protocol={0}, house={1}, unit={2}, method={3}, group={4}, model={5}, clazz={6}, temp={7}, humidity={8}".format(self.protocol, self.house, self.unit, self.method, self.group, self.model, self.clazz, self.temp, self.humidity)

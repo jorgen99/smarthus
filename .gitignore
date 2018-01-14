@@ -21,3 +21,5 @@ target
 slask
 static/bower_components
 events_log.txt
+*.log
+events_log.txt
