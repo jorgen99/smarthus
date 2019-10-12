@@ -11,10 +11,10 @@ class Constants:
     LIGHT_SWITCH_MORNING = Sensor("538870", "1")
     LIGHT_SWITCH_DIM = Sensor("42594", "1")
     VALID_PROTOCOLS = ["mandolyn", "arctech"]
-    MOOD_LIGHTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15]
-    NIGHT_LIGHTS = [9]
-    MORNING_LIGHTS = [2, 4, 9, 12, 14]
-    MOTION_CONTROLLED_LGHTS = [13]
+    MOOD_LIGHTS = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140, 150, 170]
+    NIGHT_LIGHTS = [90]
+    MORNING_LIGHTS = [20, 40, 90, 120, 140]
+    MOTION_CONTROLLED_LGHTS = [130]
     DIM_LEVEL = 80
     ON = "turnon"
     OFF = "turnoff"

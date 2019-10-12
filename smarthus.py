@@ -49,7 +49,7 @@ def toggle(device_id):
         device.turn_off()
     else:
         if device.id == 2:
-            device.dim(80)
+            device.dim(220)
         else:
             device.turn_on()
     return json.dumps(device_tupl(device))
