@@ -1,0 +1,7 @@
+.is-vertical-center {
+    display: flex;
+    align-items: center;
+}
+.tighter_section {
+    padding: 1.5rem;
+}

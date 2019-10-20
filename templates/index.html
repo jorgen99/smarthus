@@ -1,88 +1,33 @@
 <!DOCTYPE html>
-<html ng-app="devicesApp">
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='bulma.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='smarthus.css') }}" rel="stylesheet"/>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+    <script type="application/ecmascript"
+            src="{{ url_for('static', filename='smarthus.js') }}"></script>
+    <script>
+        $(() => {
+            smarthus.init()
+        });
+    </script>
     <title>Lampor</title>
 </head>
-<style>
-    body {
-       padding: 5px;
-    }
-    .button-row {
-        margin-bottom: 5px;
-    }
-    .good-night {
-        margin: 10px 15px 15px -15px;
-    }
-</style>
 <body>
-{% raw %}
-
-<div class="container-fluid" ng-controller="DevicesController">
-
-  <div class="row good-night">
-    <div class="col-xs-6">
-        <button ng-click="turnOffAll()" type="button" class="btn btn-danger btn-lg">God natt</button>
+<section class="tighter_section">
+    <div class="level is-mobile">
+        <div class="level-item has-text-centered">
+            <button id="night" class="button is-danger">Godnatt</button>
+        </div>
+        <div class="level-item has-text-centered">
+            <button id="morning" class="button is-success">God morgon!</button>
+        </div>
     </div>
-      <div class="col-xs-6">
-          <button ng-click="turnOnSome()" type="button" class="btn btn-success btn-lg">God morgon</button>
-      </div>
-  </div>
-
-    <div class="row button-row" ng-repeat="device in devices">
-      <div class="col-xs-7"><span>{{ device.name }}</span></div>
-      <div class="col-xs-2">
-        <button type="button" class="btn btn-{{ device.status }}" ng-click="toggle(device)">{{ device.label }}</button>
-      </div>
+    <div id="lights">
     </div>
-
-</div>
-{% endraw %}
-    <script type="text/javascript"
-            src="{{ url_for('static', filename='bower_components/jquery/dist/jquery.min.js') }}"></script>
-    <script type="text/javascript"
-            src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript"
-            src="{{ url_for('static', filename='bower_components/angular/angular.min.js') }}"></script>
-
-    <script>
-        var app = angular.module('devicesApp', []);
-
-        app.controller('DevicesController', function($scope, $http, deviceFactory) {
-            function init() {
-                deviceFactory.getDevices().success(function(data) {
-                    $scope.devices = data;
-                });
-            }
-            init();
-            $scope.toggle = function(device) {
-                $http.post('/devices/toggle/' + device.id).success(function(data) {
-                    device.status = data.status;
-                    device.label = data.label;
-                });
-            };
-            $scope.turnOffAll = function() {
-                $http.post('devices/turnOffAll').success(function(data) {
-                    $scope.devices = data;
-                });
-            };
-            $scope.turnOnSome = function() {
-                $http.post('devices/turnOnSome').success(function(data) {
-                    $scope.devices = data;
-                });
-            };
-
-        });
-
-        app.factory('deviceFactory', function($http){
-            var factory = {};
-            factory.getDevices = function() {
-                return $http.get('/devices')
-            };
-            return factory;
-        })
-    </script>
+</section>
 </body>
 </html>

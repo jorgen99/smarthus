@@ -1,5 +1,6 @@
 # coding=utf-8
 from flask import Flask
+from flask import Response
 from flask.templating import render_template
 
 import tellcore.telldus as td
@@ -52,14 +53,16 @@ def toggle(device_id):
             device.dim(220)
         else:
             device.turn_on()
-    return json.dumps(device_tupl(device))
+    reply_json = json.dumps(device_tupl(device))
+    return Response(reply_json, mimetype='application/json')
 
 
 def device_info():
     devices = []
     for device in core.devices():
         devices.append(device_tupl(device))
-    return json.dumps(devices)
+    json_reply = json.dumps(devices)
+    return Response(json_reply, mimetype='application/json')
 
 
 def device_tupl(device):
