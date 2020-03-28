@@ -5,6 +5,7 @@ import time
 from events.constants import Constants
 from events.status import Status
 from datetime import datetime
+import json
 
 class EventHandler:
     def __init__(self, device_locator, status):
@@ -42,12 +43,17 @@ class EventHandler:
 
         elif event.is_temperature_humidity_event():
             msg = "Temp; {0};Fukt; {1}".format(event.temp, event.humidity)
-            self.debug_print(msg)
+            json_msg = json.dumps({"temp": float(event.temp), "humidity": float(event.humidity) })
+            # self.debug_print(msg)
             self.debug_print(event.to_string())
             now = datetime.now()
             file_msg = "{0} - {1}".format(now.isoformat(), msg)
-            with open('/var/log/smarthus.log', 'a') as the_file:
-                the_file.write(file_msg + "\n")
+            # with open('/var/log/smarthus.log', 'a') as the_file:
+            #     the_file.write(file_msg + "\n")
+
+            if event.id == "183" and now.minute in [0, 1, 14,15,16, 29, 30, 31, 44, 45, 46, 59]:
+                with open('greenhouse_log.txt', 'a') as the_file:
+                    the_file.write(file_msg + "\n")
 
     def debug_print(self, msg):
         now = datetime.now()

@@ -5,7 +5,7 @@ class Constants:
     def __init__(self):
         pass
 
-    TEMPERATURE_ID = 10
+    TEMPERATURE_ID = 183
     LIGHT_RELAY = Sensor("12930598", "10")
     MOVEMENT_SENSOR = Sensor("12066258", "10")
     LIGHT_SWITCH_MORNING = Sensor("538870", "1")

@@ -19,6 +19,12 @@ def index():
     return render_template("index.html")
 
 
+@app.route('/greenhouse')
+def greenhouse():
+    with open("greenhouse_log.txt", "r") as f:
+        return Response(f.read(), mimetype='text/plain')
+
+
 @app.route('/devices')
 def devices_json():
     return device_info()
