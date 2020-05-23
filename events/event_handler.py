@@ -18,10 +18,13 @@ class EventHandler:
             self.debug_print("Det blev morkt")
             self.status.turn_on()
             self.__control_lights(Constants.MOOD_LIGHTS, Constants.ON)
+            self.__control_lights(Constants.NIGHT_LIGHTS, Constants.ON)
+
         elif event.it_became_light():
             self.debug_print("Det blev ljust")
             self.status.turn_off()
             self.__control_lights(Constants.MOOD_LIGHTS, Constants.OFF)
+            self.__control_lights(Constants.NIGHT_LIGHTS, Constants.OFF)
 
         elif self.time_to_turn_out_lights():
             self.debug_print("Dags att slacka for natten")
@@ -57,6 +60,7 @@ class EventHandler:
             #     allt_file.write(line)
 
             if event.id == "183" and now.minute in [0, 1, 29, 30, 31, 59]:
+                self.debug_print("Yo, 183!")
                 with open('greenhouse_log.txt', 'a') as the_file:
                     the_file.write(file_msg + "\n")
                 add_temperature((now.isoformat(), float(event.temp)))

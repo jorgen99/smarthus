@@ -7,21 +7,28 @@ def main():
     conn = sqlite3.connect("greenhouse.db")
     create_table(conn)
 
-    with open('greenhouse_log.txt', 'r') as the_file:
-        for line in the_file:
-            it = iter(map(lambda s: s.strip(), line.split(";")))
-            t_data = dict(zip(it, it))
-            t_data['temperature'] = float(t_data['temperature'])
-            t_data['humidity'] = int(t_data['humidity'])
-            values = (t_data['date'], t_data['temperature'])
-            insert_value(conn, values)
+    # with open('greenhouse_log.txt', 'r') as the_file:
+    #     for line in the_file:
+    #         it = iter(map(lambda s: s.strip(), line.split(";")))
+    #         t_data = dict(zip(it, it))
+    #         t_data['temperature'] = float(t_data['temperature'])
+    #         t_data['humidity'] = int(t_data['humidity'])
+    #         values = (t_data['date'], t_data['temperature'])
+    #         insert_value(conn, values)
+    # conn.commit()
 
     print_no_of_rows(conn)
+    print_last_values(conn)
 
 def print_no_of_rows(conn):
     cur = conn.cursor()
     cur.execute("SELECT count(*) FROM greenhouse")
-    print("No of lines: {}".format(cur.fetchone()))
+    print("No of lines: {}".format(cur.fetchone()[0]))
+
+def print_last_values(conn):
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM greenhouse WHERE time = (SELECT MAX(time) FROM greenhouse)")
+    print("Last row: {}".format(cur.fetchone()))
 
 def insert_value(conn, temperature):
     sql = """ INSERT INTO greenhouse(time, temperature) values(?, ?) """
