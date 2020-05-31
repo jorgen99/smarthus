@@ -2,7 +2,7 @@
 
 Control lights with a Tellstick Duo
 
-##Update: 2020
+## Update: 2020
 This is a hacky project I've been using at home for a number of years
 now. The python code is ok, for a Java guy. The front-end, not so
 much... :)
