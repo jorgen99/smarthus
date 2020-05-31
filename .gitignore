@@ -23,3 +23,5 @@ static/bower_components
 events_log.txt
 *.log
 events_log.txt
+greenhouse.db
+greenhouse_log.txt

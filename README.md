@@ -1,10 +1,21 @@
-smarthus
-========
+# smarthus
 
-Control lights with a Tellstick Duo, Angular, Bootstrap and Flask
+Control lights with a Tellstick Duo
 
-I wanted to play with the Tellstick Duo and at the same time learn
-some Angular and Bootstrap.
+##Update: 2020
+This is a hacky project I've been using at home for a number of years
+now. The python code is ok, for a Java guy. The front-end, not so
+much... :)
+
+I've added 'tellstick_events.py' that listens for events like
+on/off-signals, temperature broadcasts, light sensors and stuff like
+that. It's a stand-alone app that you can use to turn lights on and off
+when it gets light/dark, log temperature and so on.
+
+Anyway, below is the setup instructions from 2014, not sure they work
+anymore but you'll figure it out...
+
+## How to set it up
 
 I found [tellcore-py] (https://github.com/erijo/tellcore-py) a
 Python wrapper to Telldus Core, so I needed a lightweight Python
