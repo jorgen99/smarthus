@@ -1,17 +1,16 @@
 # coding=utf-8
 
-from tellcore import constants as const
 import time
-from events.constants import Constants
-from events.status import Status
 from datetime import datetime
-from greenhouse import add_temperature
+from tellcore import constants as const
+from events.constants import Constants
+from events.greenhouse import add_temperature
+
 
 class EventHandler:
     def __init__(self, device_locator, status):
         self.device_locator = device_locator
         self.status = status
-        
 
     def handle(self, event):
         if event.it_became_dark():
@@ -65,7 +64,8 @@ class EventHandler:
                     the_file.write(file_msg + "\n")
                 add_temperature((now.isoformat(), float(event.temp)))
 
-    def debug_print(self, msg):
+    @staticmethod
+    def debug_print(msg):
         now = datetime.now()
         print("{0} - {1}".format(now.isoformat(), msg))
 
@@ -89,7 +89,6 @@ class EventHandler:
             else:
                 self.debug_print("Ja släcker {0}".format(encoded_name))
                 self.__send_command_to_device(Constants.OFF, device)
-                
 
     def __control_lights(self, light_ids, light_command):
         for device_id in light_ids:
@@ -122,7 +121,8 @@ class EventHandler:
                     device.turn_on()
                 self.__status_and_sleep(device)
         else:
-            print("   Inte av och inte på... command: {}, last_command: {}".format(command, last_command))
+            msg = "   Inte av och inte på... command: {}, last_command: {}"
+            print(msg.format(command, last_command))
 
     def __status_and_sleep(self, device):
         self.__last_command(device)
@@ -142,4 +142,3 @@ class EventHandler:
             return x
         else:
             return x.encode("utf-8")
-

@@ -7,12 +7,13 @@ from events.event import Event
 from events.event_handler import EventHandler
 from events.status import Status
 
-
 status = Status(True)
+
 
 def raw_event(data, controller_id, cid):
     event = Event(data)
     EventHandler(device_locator, status).handle(event)
+
 
 try:
     import asyncio
