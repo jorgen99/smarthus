@@ -22,8 +22,7 @@ the current is libconfuse2
 I got some error messages about "pthread" when make was compiling. After
 some Googling I found this post. The second link is to the first answer.
 
-https://stackoverflow.com/questions/1620918/cmake-and-libpthread
-
+https://stackoverflow.com/questions/1620918/cmake-and-libpthread  
 https://stackoverflow.com/a/29871891/5264
 
 I think the code from the post should go in to the file CMakeLists.txt.
