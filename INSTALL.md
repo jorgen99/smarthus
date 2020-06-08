@@ -14,7 +14,6 @@ http://developer.telldus.com/wiki/TellStickInstallationSource
 
 libconfuse0 can't be installed in new versions of Ubuntu. At the moment
 the current is libconfuse2
-
     
     sudo apt install build-essential cmake ibftdi1 libftdi-dev libconfuse2 libconfuse-dev
     cmake .
@@ -24,9 +23,10 @@ I got some error messages about "pthread" when make was compiling. After
 some Googling I found this post. The second link is to the first answer.
 
 https://stackoverflow.com/questions/1620918/cmake-and-libpthread
+
 https://stackoverflow.com/a/29871891/5264
 
-I think the code from the it should go in to the file CMakeLists.txt.
+I think the code from the post should go in to the file CMakeLists.txt.
 I had some problems with what to replace my_app with and after fiddling
 around with cmake and make it finally did build without errors. I'm
 not sure why it started to work all of a sudden...
@@ -59,7 +59,7 @@ Start the daemon
 
     sudo /etc/init.d/telldusd start
 
-Try turning on and off one of the configured devices:
+Try turning on and off one of the configured devices to see if it's working:
 
     tdtool --on <device_id_from_tellstick.conf>
     tdtool --off <device_id_from_tellstick.conf>
