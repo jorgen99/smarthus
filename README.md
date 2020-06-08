@@ -3,10 +3,10 @@
 Control lights with a Tellstick Duo
 
 ## Update: June 2020
-I got rid of my old laptop running Linux Mint 17 and a bit ole' Drobo Nas.
-I replaced them with a Raspberry Pi 4 and a 2GB usb ssd. My adventures
-getting telldus-core installed on Ubuntu Server 20.04 LTS for the Pi is
-was braindumped into the file INSTALL.md.
+I got rid of my old laptop running Linux Mint 17 together with a big
+ole' Drobo Nas. I replaced them with a Raspberry Pi 4 and a 2GB usb
+ssd. My adventures getting telldus-core installed on Ubuntu Server
+20.04 LTS for the Pi is was braindumped into the file INSTALL.md.
 
 ## Update: 2020
 This is a hacky project I've been using at home for a number of years
@@ -15,8 +15,8 @@ much... :)
 
 I've added 'tellstick_events.py' that listens for events like
 on/off-signals, temperature broadcasts, light sensors and stuff like
-that. It's a stand-alone app that you can use to turn lights on and off
-when it gets light/dark, log temperature and so on.
+that. It's a stand-alone app that you can use to turn lights on and
+off when it gets light/dark, log temperature and so on.
 
 
 Anyway, below is the setup instructions from 2014, not sure they work
